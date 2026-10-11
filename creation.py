@@ -3,7 +3,6 @@ from arrows.arrows import ArrowType, Direction
 import networkx as nx
 import matplotlib.pyplot as plt
 
-
 COLOR_MAP = {
     ArrowType.Arrow: "red",
     ArrowType.SplitterUpDown: "red",
@@ -52,7 +51,7 @@ LABEL_MAP = {
     ArrowType.Pulse: "Pulse"
 }
 SCALE = 80
-CREATE_INV = True
+CREATE_INV = False
 
 
 def get_color(arrow_type: ArrowType) -> str:
@@ -76,8 +75,9 @@ def create_nodes(ar_map: arrows.Map, graph: nx.DiGraph):
                     color=get_color(arrow.type),
                     x=gx * SCALE,
                     y=gy * SCALE,
+                    level=gx+gy,
                     label=LABEL_MAP.get(arrow.type, "?"),
-                    fixed=True,
+                    # fixed=True,
                     physics=False,
                 )
 
@@ -96,7 +96,8 @@ def new_cords_with_dir(old_cords: tuple[int, int], direction: Direction, step=1)
     return None
 
 
-def new_cords_with_dir_diagonal(old_cords: tuple[int, int], direction: Direction, flip=1, step=1) -> tuple[int, int] | None:
+def new_cords_with_dir_diagonal(old_cords: tuple[int, int], direction: Direction, flip=1, step=1) -> tuple[
+                                                                                                         int, int] | None:
     """Получает координаты из направлений"""
     match direction:
         case Direction.North:
@@ -110,8 +111,11 @@ def new_cords_with_dir_diagonal(old_cords: tuple[int, int], direction: Direction
     return None
 
 
-def add_edge_if_target_exists(G, u, v, **attrs):
+def add_edge_if_target_exists(G, u, v, perm=True, **attrs):
     if (v in G and u in G) or CREATE_INV:
+        if (G.nodes()[v]["type"] in (ArrowType.Detector, ArrowType.Button) and perm) or \
+                (G.nodes()[u]["type"] != ArrowType.Blocker and G.nodes()[v]["type"] in (ArrowType.Pulse, ArrowType.Source)):
+            return False
         G.add_edge(u, v, **attrs)
         return True
     return False
@@ -145,19 +149,23 @@ def create_edges(graph: nx.DiGraph):
                     if data["direction"] in (Direction.East, Direction.North):
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.East))
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.North,
-                                                                step=(-1 if data['direction'] == Direction.East else 1)))
+                                                                                  step=(-1 if data[
+                                                                                                  'direction'] == Direction.East else 1)))
                     else:
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.West))
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.North,
-                                                                step=(-1 if data['direction'] == Direction.South else 1)))
+                                                                                  step=(-1 if data[
+                                                                                                  'direction'] == Direction.South else 1)))
                 else:
                     if data["direction"] in (Direction.East, Direction.North):
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.East,
-                                                                step=(-1 if data['direction'] == Direction.North else 1)))
+                                                                                  step=(-1 if data[
+                                                                                                  'direction'] == Direction.North else 1)))
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.North, ))
                     else:
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.West,
-                                                                step=(-1 if data['direction'] == Direction.South else 1)))
+                                                                                  step=(-1 if data[
+                                                                                                  'direction'] == Direction.South else 1)))
                         add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction.North, -1))
             case ArrowType.BlueSplitterUpUp:
                 if (new_cords := new_cords_with_dir(node, data["direction"])) is not None:
@@ -167,12 +175,13 @@ def create_edges(graph: nx.DiGraph):
                 if (new_cords := new_cords_with_dir(node, data["direction"], step=2)) is not None:
                     add_edge_if_target_exists(graph, node, new_cords)
                     add_edge_if_target_exists(graph, node, new_cords_with_dir(node, (data["direction"] + 1) % 4,
-                                                            step=(-1 if data['flipped'] else 1)))
+                                                                              step=(-1 if data['flipped'] else 1)))
             case ArrowType.BlueSplitterUpDiagonal:
                 if (new_cords := new_cords_with_dir(node, data["direction"])) is not None:
                     add_edge_if_target_exists(graph, node, new_cords)
                     add_edge_if_target_exists(graph, node, new_cords_with_dir_diagonal(node, data["direction"],
-                                                                     flip=(-1 if data['flipped'] else 1), step=1))
+                                                                                       flip=(-1 if data[
+                                                                                           'flipped'] else 1), step=1))
             case ArrowType.Button:
                 for i in range(4):
                     add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction(i)))
@@ -180,10 +189,10 @@ def create_edges(graph: nx.DiGraph):
                 for i in range(4):
                     add_edge_if_target_exists(graph, node, new_cords_with_dir(node, Direction(i)))
             case ArrowType.Detector:
-                add_edge_if_target_exists(graph, new_cords_with_dir(node, data["direction"], step=-1), node)
+                add_edge_if_target_exists(graph, new_cords_with_dir(node, data["direction"], step=-1), node, perm=False)
                 add_edge_if_target_exists(graph, node, new_cords_with_dir(node, data["direction"]))
             case ArrowType.SplitterUpRightLeft:
-                print(node, data)
+                # print(node, data)
                 add_edge_if_target_exists(graph, node, new_cords_with_dir(node, data["direction"]))
-                add_edge_if_target_exists(graph, node, new_cords_with_dir(node, data["direction"]+1, step=-1))
+                add_edge_if_target_exists(graph, node, new_cords_with_dir(node, data["direction"] + 1, step=-1))
                 add_edge_if_target_exists(graph, node, new_cords_with_dir(node, (data["direction"] + 1) % 4))

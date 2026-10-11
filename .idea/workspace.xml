@@ -4,16 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bda19f1c-29ea-476e-b70e-5dd00db03d66" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/creation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/processing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="bda19f1c-29ea-476e-b70e-5dd00db03d66" name="Changes" comment="Changes and refactoring">
+      <change afterPath="$PROJECT_DIR$/proc2_bigger.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/proc2_full.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/arrows/arrows.py" beforeDir="false" afterPath="$PROJECT_DIR$/arrows/arrows.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/creation.py" beforeDir="false" afterPath="$PROJECT_DIR$/creation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/file_str" beforeDir="false" afterPath="$PROJECT_DIR$/file_str" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graph.html" beforeDir="false" afterPath="$PROJECT_DIR$/graph.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/processing.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,9 +43,15 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/infinitybee0/PycharmProjects/ArrowsStates",
     "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\infinitybee0\PycharmProjects\ArrowsStates" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="ArrowsStates" />
@@ -87,6 +92,15 @@
       <option name="presentableId" value="Default" />
       <updated>1791620359444</updated>
     </task>
+    <task id="LOCAL-00001" summary="Changes and refactoring">
+      <option name="closed" value="true" />
+      <created>1791660655471</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1791660655472</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -99,5 +113,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Changes and refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes and refactoring" />
   </component>
 </project>
